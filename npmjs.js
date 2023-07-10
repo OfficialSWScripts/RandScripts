@@ -4,7 +4,7 @@
 // @match       https://www.npmjs.com/package/*
 // @match       https://unpkg.com/browse/*/dist/
 // @grant       GM_setClipboard
-// @version     1.1
+// @version     1.2
 // @author      hunmer
 // @description 2022/6/28 00:37:30
 // ==/UserScript==
@@ -48,7 +48,7 @@ if (location.host == 'www.npmjs.com') {
       GM_setClipboard(format.replace('{url}', url));
       
       // Provide copy notification
-      btn.innerHTML = `Copied!`;
+      btn.innerText = 'Copied!';
       btn.disabled = true;
     }
     
