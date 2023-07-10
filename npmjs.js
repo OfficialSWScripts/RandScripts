@@ -6,7 +6,6 @@
 // @grant       GM_setClipboard
 // @version     1.4
 // @author      hunmer
-// @description 2022/6/28 00:37:30
 // ==/UserScript==
 
 if (location.host === 'www.npmjs.com') {
