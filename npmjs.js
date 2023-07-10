@@ -4,17 +4,22 @@
 // @match       https://www.npmjs.com/package/*
 // @match       https://unpkg.com/browse/*/dist/
 // @grant       GM_setClipboard
-// @version     1.3
+// @version     1.4
 // @author      hunmer
 // @description 2022/6/28 00:37:30
 // ==/UserScript==
 
-if (location.host == 'www.npmjs.com') {
+if (location.host === 'www.npmjs.com') {
   let span = document.querySelector('._50685029');
   let url = 'https://unpkg.com' + location.pathname.replace('package', 'browse') + '/dist/';
-
+  
   // Open link in new tab
-  span.innerHTML = '<a href="' + url + '" target="_blank">' + span.innerHTML + '</a>';
+  let link = document.createElement('a');
+  link.href = url;
+  link.target = '_blank';
+  link.innerHTML = span.innerHTML;
+  span.innerHTML = '';
+  span.appendChild(link);
 } else {
   let filesTable = document.querySelector('div[data-testid="pkg-file-table"] table');
   let tableRows = filesTable && filesTable.querySelectorAll('tbody > tr');
@@ -59,12 +64,17 @@ if (location.host == 'www.npmjs.com') {
           }
           
           GM_setClipboard(format.replace('{url}', fileUrl));
-
           button.disabled = true;
           button.innerText = 'Copied!';
+          setTimeout(() => {
+              button.disabled = false;
+              button.innerText = 'Copy';
+          }, 2000);
         });
 
         let buttonCell = document.createElement('td');
+        buttonCell.style.verticalAlign = 'middle';
+        buttonCell.style.textAlign = 'center';
         buttonCell.appendChild(button);
 
         row.appendChild(buttonCell);
@@ -75,7 +85,7 @@ if (location.host == 'www.npmjs.com') {
 
 // Keyboard Shortcut (Ctrl + C)
 document.addEventListener('keydown', function (event) {
-  if (event.ctrlKey && event.code === "KeyC") {
+  if (event.ctrlKey && event.code === 'KeyC') {
     let activeButton = document.querySelector('button[disabled]');
     if (activeButton) {
       activeButton.click();
